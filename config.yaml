@@ -1,0 +1,61 @@
+seed: 42
+
+model:
+  dynamic_dim: 5
+  static_dim: 6
+  latent_dim: 64
+  fast_hidden: 64
+  slow_hidden: 64
+  baseline_hidden: 96
+  max_lag: 12
+  dt: 1.0
+  activation: tanh
+  use_partition_gate: true
+  use_cross_memory: true
+  use_routing: true
+
+data:
+  path: data/synthetic_basin.npz
+  auto_generate_synthetic: true
+  synthetic_steps: 5000
+  seq_len: 168
+  stride: 24
+  batch_size: 16
+  num_workers: 0
+  pin_memory: false
+  train_fraction: 0.70
+  val_fraction: 0.15
+
+loss:
+  lambda_q: 1.0
+  lambda_logq: 0.20
+  lambda_peak: 0.50
+  lambda_timing: 0.50
+  lambda_shape: 0.0
+  lambda_baseflow: 0.50
+  lambda_recession: 0.10
+  lambda_smooth: 0.05
+  delta_q: 1.0
+  delta_peak: 0.25
+  delta_timing: 0.25
+  delta_baseflow: 1.0
+  kappa_timing: 10.0
+  eps_q: 1.0e-6
+  precip_recession_threshold: 0.10
+
+training:
+  epochs: 20
+  warmup_epochs: 3
+  surgery_start_epoch: 10
+  use_gradient_surgery: true
+  lr_shared: 0.001
+  lr_fast: 0.001
+  lr_slow: 0.001
+  lr_routing: 0.001
+  baseline_lr: 0.001
+  weight_decay: 0.0
+  grad_clip_norm: 5.0
+  gradient_eps: 1.0e-12
+  use_cuda: true
+  checkpoint_path: results/checkpoints/cfsr_best.pt
+  log_path: results/logs/train.csv
